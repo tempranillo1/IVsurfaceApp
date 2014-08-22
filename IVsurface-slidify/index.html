@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<title>Implied Volatility Surface</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=1274, user-scalable=no">
+	<meta name="description" content="Implied Volatility Surface">
+	<meta name="author" content="Rafał P.">
+	<meta name="generator" content="slidify" />
+	<!-- LOAD STYLE SHEETS -->
+	<link rel="stylesheet" href="libraries/frameworks/shower/themes/ribbon/styles/screen.css">
+	<link rel="stylesheet" media="print"
+	  href="libraries/frameworks/shower/themes/ribbon/styles/print.css">
+	<link rel="stylesheet" href="libraries/highlighters/highlight.js/css/today.css">  <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+	<!--
+		To apply styles to the certain slides
+		use slide ID to get needed elements
+		-->
+	<style>
+		#Cover h2 {
+      margin:65px 0 0;
+			color:#FFF;
+			text-align:center;
+			font-size:70px;
+			}
+		#FitToWidth h2,
+		#FitToHeight h2 {
+			color:#FFF;
+			text-align:center;
+			}
+	</style> 
+</head>
+<body class="list">
+  <header class="caption">
+  	<h1>Implied Volatility Surface</h1>
+	</header>
+  <section class="slide " id="slide-1">
+  <div>
+    <h2></h2>
+    <p>Option&#39;s price in Black-Scholes model is function
+\[C = f(S_t, K, r, d, \sigma, \tau) \]
+where \(S_t\) is underlying asset, \(K\) strike price, \(r\) interest rate, \(d\) dividend yield, \(\sigma\) volatility, \(\tau\) time to maturity.</p>
+
+<p>Every variable, except volatility \(\sigma\) can be observe in the market...</p>
+
+  </div>
+</section>
+<section class="slide " id="slide-2">
+  <div>
+    <h2></h2>
+    <p>$\dots$but we have options price from the market, so we can find such \(\sigma\), which satisfy equallity beetwen market and model price.
+Lets define \(g\) as 
+\[g(\sigma) = C^{\rm mkt} - f(S_t, K, r, d, \sigma, \tau)\]
+and using numerical methods find \(\sigma\) which satisfy
+\[g(\sigma) = 0\]
+Obtained \(\sigma\) is called implied volatility.</p>
+
+  </div>
+</section>
+<section class="slide " id="slide-3">
+  <div>
+    <h2></h2>
+    <p>Each day, in the market there are quoted many options with different strike prices \(K\) and time to maturity \(\tau\).
+After computng implied volatility for all avaible optios we can put our results in matrix, like below
+\[
+\begin{pmatrix}
+     \sigma^{\rm imp}_{T_1,K_1} & \sigma^{\rm imp}_{T_1,K_2} & \cdots & \sigma^{\rm imp}_{T_1,K_N} \cr
+     \sigma^{\rm imp}_{T_2,K_1}  & \sigma^{\rm imp}_{T_2,K_2} & \cdots & \sigma^{\rm imp}_{T_2,K_N} \cr
+     \vdots & \vdots & \ddots & \vdots \cr
+     \sigma^{\rm imp}_{T,K_1} & \sigma^{\rm imp}_{T,K_2} & \cdots & \sigma^{\rm imp}_{T,K_N} \cr
+\end{pmatrix}
+\]</p>
+
+  </div>
+</section>
+<section class="slide " id="slide-4">
+  <div>
+    <h2></h2>
+    <p>To obtain regular volatility surface we have to use interpolation  between nodes, extrapolation outside avaible nodes and same smoothing techniques.</p>
+
+<p>Between each time periods \(T_i < T < T_{i+1}\) (fixed \(K\)) linear interpolation in terms of not annualized variance is used</p>
+
+<p>\[
+\sigma(T) = \frac{1}{\sqrt{T}} \sqrt{\sigma^2_i T_i + \tau\left( \sigma^2_{i+1} T_{i+1} - \sigma^2_{i} T_{i} \right)}
+\]
+where \(\tau = \frac{T - T_i}{T_{i+1} - T_i}\).</p>
+
+  </div>
+</section>
+<section class="slide " id="slide-5">
+  <div>
+    <h2></h2>
+    <p>Interpolating between strike prices (fixed \(\tau\)) is a bit more tricky. We have to use more sophisticated methods like:</p>
+
+<ul>
+<li>polynomial regression <code>stats::poly()</code></li>
+<li>local polynomial regression (loess) <code>stats::loess()</code></li>
+<li>natural cubic splines <code>splines::ns()</code></li>
+<li>smoothing splines <code>stats::smooth.spline()</code></li>
+<li>B-spline <code>splines::bs()</code></li>
+</ul>
+
+  </div>
+</section>
+  <div class="progress">
+    <div></div>
+  </div>
+	<script src="libraries/frameworks/shower/shower.js"></script>
+	<!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+	<script type="text/x-mathjax-config">
+	  MathJax.Hub.Config({
+	    tex2jax: {
+	      inlineMath: [['$','$'], ['\\(','\\)']],
+	      processEscapes: true
+	    }
+	  });
+	</script>
+	<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script> -->
+	<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+	<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+	<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+	 
+		<!-- Copyright © 2010–2012 Vadim Makeev — pepelsbey.net -->
+	<!-- Photos by John Carey — fiftyfootshadows.net -->
+</body>
+</html>
